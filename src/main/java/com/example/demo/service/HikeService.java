@@ -31,6 +31,11 @@ public class HikeService {
     public Hike updateHike(Long id, Hike hike) {
         Hike existingHike = hikeRepository.findById(id).orElse(null);
         if (existingHike != null) {
+            existingHike.setStart(hike.getStart());
+            existingHike.setEnd(hike.getEnd());
+            existingHike.setObjectives(hike.getObjectives());
+            existingHike.setDate(hike.getDate());
+            existingHike.setDif(hike.getDif());
             existingHike.setPhoto(hike.getPhoto());
             return hikeRepository.save(existingHike);
         } else {
