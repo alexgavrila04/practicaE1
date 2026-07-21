@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.HikeDTO;
 import com.example.demo.model.Hike;
 import com.example.demo.service.HikeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +46,7 @@ public class HikeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> createHike (@RequestBody HikeDTO hikeDto) {
+    public ResponseEntity<Object> createHike (@Valid @RequestBody HikeDTO hikeDto) {
         try {
             Hike savedHike = hikeService.createHike(hikeDto);
             return new ResponseEntity<>(savedHike, HttpStatus.CREATED); // 201 Created
@@ -55,7 +56,7 @@ public class HikeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateHike(@PathVariable Long id, @RequestBody HikeDTO hikeDto) {
+    public ResponseEntity<Object> updateHike(@PathVariable Long id, @Valid @RequestBody HikeDTO hikeDto) {
         try {
             Hike updatedHike = hikeService.updateHike(id, hikeDto);
             if (updatedHike == null) {
