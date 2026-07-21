@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.HikeDTO;
 import com.example.demo.model.Hike;
 import com.example.demo.service.HikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,9 @@ public class HikeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> createHike (@RequestBody Hike hike) {
+    public ResponseEntity<Object> createHike (@RequestBody HikeDTO hikeDto) {
         try {
-            Hike savedHike = hikeService.createHike(hike);
+            Hike savedHike = hikeService.createHike(hikeDto);
             return new ResponseEntity<>(savedHike, HttpStatus.CREATED); // 201 Created
         } catch (Exception e) {
             return new ResponseEntity<>("Nu am putut salva drumeția. Verificați datele: " + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -54,9 +55,9 @@ public class HikeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateHike(@PathVariable Long id, @RequestBody Hike hike) {
+    public ResponseEntity<Object> updateHike(@PathVariable Long id, @RequestBody HikeDTO hikeDto) {
         try {
-            Hike updatedHike = hikeService.updateHike(id, hike);
+            Hike updatedHike = hikeService.updateHike(id, hikeDto);
             if (updatedHike == null) {
                 return new ResponseEntity<>("Drumeția cu ID-ul " + id + " nu există.", HttpStatus.NOT_FOUND);
             }

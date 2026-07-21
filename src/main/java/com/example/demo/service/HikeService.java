@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.HikeDTO;
 import com.example.demo.model.Hike;
 import com.example.demo.repository.HikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,26 @@ public class HikeService {
         return hikeRepository.findById(id).orElse(null);
     }
 
-    public Hike createHike(Hike hike) {
+    public Hike createHike(HikeDTO hikeDto) {
+        Hike hike = new Hike();
+        hike.setStart(hikeDto.getStart());
+        hike.setEnd(hikeDto.getEnd());
+        hike.setObjectives(hikeDto.getObjectives());
+        hike.setDate(hikeDto.getDate());
+        hike.setDif(hikeDto.getDif());
+        hike.setPhoto(hikeDto.getPhoto());
         return hikeRepository.save(hike);
     }
 
-    public Hike updateHike(Long id, Hike hike) {
+    public Hike updateHike(Long id, HikeDTO hikeDto) {
         Hike existingHike = hikeRepository.findById(id).orElse(null);
         if (existingHike != null) {
-            existingHike.setStart(hike.getStart());
-            existingHike.setEnd(hike.getEnd());
-            existingHike.setObjectives(hike.getObjectives());
-            existingHike.setDate(hike.getDate());
-            existingHike.setDif(hike.getDif());
-            existingHike.setPhoto(hike.getPhoto());
+            existingHike.setStart(hikeDto.getStart());
+            existingHike.setEnd(hikeDto.getEnd());
+            existingHike.setObjectives(hikeDto.getObjectives());
+            existingHike.setDate(hikeDto.getDate());
+            existingHike.setDif(hikeDto.getDif());
+            existingHike.setPhoto(hikeDto.getPhoto());
             return hikeRepository.save(existingHike);
         } else {
             return null;
