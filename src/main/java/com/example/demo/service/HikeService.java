@@ -47,7 +47,7 @@ public class HikeService {
             existingHike.setDate(hikeDto.getDate());
             existingHike.setDif(hikeDto.getDif());
             existingHike.setPhoto(hikeDto.getPhoto());
-            return hikeRepository.save(existingHike);
+            return existingHike;
         } else {
             return null;
         }
