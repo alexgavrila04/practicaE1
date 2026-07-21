@@ -24,58 +24,31 @@ public class HikeController {
 
     @GetMapping("")
     public ResponseEntity<Object> getAllHikes() {
-        try {
-            List<Hike> hikes =  hikeService.getAllHikes();
-            return new ResponseEntity<>(hikes, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Eroare la preluarea listei: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        List<Hike> hikes =  hikeService.getAllHikes();
+        return new ResponseEntity<>(hikes, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getHikeById(@PathVariable Long id) {
-        try {
-            Hike hike = hikeService.getHikeById(id);
-            if (hike == null) {
-                return new ResponseEntity<>("Drumetia cu ID-ul " + id + " nu a fost gasita.", HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(hike, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Eroare la cautare: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        Hike hike = hikeService.getHikeById(id);
+        return new ResponseEntity<>(hike, HttpStatus.OK);
     }
 
     @PostMapping("")
     public ResponseEntity<Object> createHike (@Valid @RequestBody HikeDTO hikeDto) {
-        try {
-            Hike savedHike = hikeService.createHike(hikeDto);
-            return new ResponseEntity<>(savedHike, HttpStatus.CREATED); // 201 Created
-        } catch (Exception e) {
-            return new ResponseEntity<>("Nu am putut salva drumeția. Verificați datele: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Hike savedHike = hikeService.createHike(hikeDto);
+        return new ResponseEntity<>(savedHike, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateHike(@PathVariable Long id, @Valid @RequestBody HikeDTO hikeDto) {
-        try {
-            Hike updatedHike = hikeService.updateHike(id, hikeDto);
-            if (updatedHike == null) {
-                return new ResponseEntity<>("Drumeția cu ID-ul " + id + " nu există.", HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(updatedHike, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Nu am putut actualiza drumeția: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+        Hike updatedHike = hikeService.updateHike(id, hikeDto);
+        return new ResponseEntity<>(updatedHike, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteHike(@PathVariable Long id) {
-        try {
-            hikeService.deleteHike(id);
-            return new ResponseEntity<>("Drumeția a fost ștearsă cu succes.", HttpStatus.OK);
-        } catch (Exception _) {
-            return new ResponseEntity<>("Eroare la ștergere. Posibil ca ID-ul să nu existe.", HttpStatus.NOT_FOUND);
-        }
+        hikeService.deleteHike(id);
+        return new ResponseEntity<>("Drumeția a fost ștearsă cu succes.", HttpStatus.OK);
     }
-
 }

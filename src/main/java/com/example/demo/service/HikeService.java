@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.HikeDTO;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Hike;
 import com.example.demo.repository.HikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,9 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class HikeService {
+
+    private static final String NOT_FOUND_PREFIX = "Drumeția cu ID-ul ";
+    private static final String NOT_FOUND_SUFFIX = " nu a fost găsită.";
 
     private final HikeRepository hikeRepository;
 
@@ -24,7 +28,8 @@ public class HikeService {
     }
 
     public Hike getHikeById(Long id) {
-        return hikeRepository.findById(id).orElse(null);
+        return hikeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_PREFIX + id + NOT_FOUND_SUFFIX));
     }
 
     public Hike createHike(HikeDTO hikeDto) {
@@ -39,21 +44,21 @@ public class HikeService {
     }
 
     public Hike updateHike(Long id, HikeDTO hikeDto) {
-        Hike existingHike = hikeRepository.findById(id).orElse(null);
-        if (existingHike != null) {
-            existingHike.setStart(hikeDto.getStart());
-            existingHike.setEnd(hikeDto.getEnd());
-            existingHike.setObjectives(hikeDto.getObjectives());
-            existingHike.setDate(hikeDto.getDate());
-            existingHike.setDif(hikeDto.getDif());
-            existingHike.setPhoto(hikeDto.getPhoto());
-            return existingHike;
-        } else {
-            return null;
-        }
+        Hike existingHike = hikeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_PREFIX + id + NOT_FOUND_SUFFIX));
+        existingHike.setStart(hikeDto.getStart());
+        existingHike.setEnd(hikeDto.getEnd());
+        existingHike.setObjectives(hikeDto.getObjectives());
+        existingHike.setDate(hikeDto.getDate());
+        existingHike.setDif(hikeDto.getDif());
+        existingHike.setPhoto(hikeDto.getPhoto());
+        return existingHike;
     }
 
     public void deleteHike(Long id) {
-        hikeRepository.deleteById(id);
+        Hike hikeToDelete = hikeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_PREFIX + id + NOT_FOUND_SUFFIX));
+        hikeRepository.deleteById(hikeToDelete.getId());
+
     }
 }

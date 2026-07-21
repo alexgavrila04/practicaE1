@@ -7,7 +7,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 @Setter
 @Getter
@@ -35,18 +34,7 @@ public class Hike {
 
     private String photo;
 
-    public Hike() {
-    }
-
-    public Hike(String start, String end, Vector<String> objectives, LocalDate date, Difficulty dif, String photo) {
-        this.start = start;
-        this.end = end;
-        if (objectives != null) {
-            this.objectives = new ArrayList<>(objectives);
-        }
-        this.date = date;
-        this.dif = dif;
-        this.photo = photo;
+    public Hike() { // Constructor obligatoriu pentru Hibernate
     }
 
     public void setObjectives(List<String> objectives) {
@@ -56,5 +44,4 @@ public class Hike {
             this.objectives = null;
         }
     }
-
 }
